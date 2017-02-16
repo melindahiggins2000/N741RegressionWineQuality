@@ -23,4 +23,4 @@ Homework 3 is detailed at Dr. Vicki Hertzberg's Github repository at [https://gi
 
 ## Short Example with Red Wine Data
 
-Be sure to check out the "redWine.Rmd" and associated output formats (HTML, DOCX and PDF) and Github markdown (MD) format included in this repository. 
+Be sure to check out the "redWine.Rmd" and associated output formats (HTML, DOCX and PDF) and Github markdown (MD) format included in this repository, see [https://github.com/melindahiggins2000/N741RegressionWineQuality/blob/master/redWine.md](https://github.com/melindahiggins2000/N741RegressionWineQuality/blob/master/redWine.md). 
