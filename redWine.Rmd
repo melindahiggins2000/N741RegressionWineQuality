@@ -3,9 +3,9 @@ title: "Red Wine"
 author: "Melinda K. Higgins, PhD."
 date: "February 16, 2017"
 output:
-  pdf_document: default
-  html_document: default
   github_document: default
+  html_document: default
+  pdf_document: default
   word_document: default
 ---
 
