@@ -1,0 +1,58 @@
+---
+title: "Red Wine"
+author: "Melinda K. Higgins, PhD."
+date: "February 16, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# define libraries
+library(ggplot2)
+```
+
+## Read in data
+
+NOTE: There are 2 formatting issues with the data as downloaded from the UCI data repository. Even though the filename extension is CSV (usually "comma-delimited" format), 
+
+1. the variable names have multiple words separated by spaces which many/most import routines will have problems with and
+2. the "delimiter" or symbol used to separate data fields (aka, the columns) is the semicolon `;` so we need to specify this.
+
+If it was a simple comma-delimtied file the function `read.csv()` would work fine. However, to address the issue of the semicolon, we need to use `read.table()` and provide the delimiter specifically.
+
+NOTE: `read.table()` also "fixes" the variable names such that the spaces are filled in using a period `.`. For example, the 1st variable "fixed acidity" is converted to `fixed.acidity` in the final dataframe.
+
+```{r}
+redWine <- read.table("winequality-red.csv",
+                      header=TRUE,
+                      sep=";")
+```
+
+## Run a summary of the Red Wine Data
+
+```{r}
+summary(redWine)
+```
+
+## Histogram of Fixed Acidity using `ggplot()`
+
+```{r}
+ggplot(aes(fixed.acidity), data=redWine) +
+  geom_histogram()
+```
+
+## Density Overlay with Histogram & add color
+
+```{r}
+ggplot(aes(fixed.acidity), data=redWine) + 
+  geom_histogram(aes(y =..density..), 
+                 breaks=seq(4, 16, by = 0.5), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+  geom_density(col=2) + 
+  labs(title="Histogram for Fixed Acidity") +
+  labs(x="Fixed Acidity", y="Proportion")
+```
+
