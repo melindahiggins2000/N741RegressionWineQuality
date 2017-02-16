@@ -21,4 +21,6 @@ In Decision Support Systems, Elsevier, 47(4):547-553, 2009.
 
 Homework 3 is detailed at Dr. Vicki Hertzberg's Github repository at [https://github.com/vhertzb/Regression-1](https://github.com/vhertzb/Regression-1). At her Github repository, she provides a slightly updated copy of the White Wine dataset with the variable names updated with the "spaces" removed from the variable names. A copy of "White_wines.csv" is also provided here for easy reference as well. This file is indeed a CSV comma delimited file and the variable names have the period `.` inserted for the spaces so the variable names import correctly. So, for this file `read.csv()` will work.
 
+## Short Example with Red Wine Data
 
+Be sure to check out the "redWine.Rmd" and associated output formats (HTML, DOCX and PDF) and Github markdown (MD) format included in this repository. 
