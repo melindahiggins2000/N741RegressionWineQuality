@@ -3,6 +3,13 @@ Red Wine
 Melinda K. Higgins, PhD.
 February 16, 2017
 
+``` r
+knitr::opts_chunk$set(echo = TRUE)
+
+# define libraries
+library(ggplot2)
+```
+
 Read in data
 ------------
 
