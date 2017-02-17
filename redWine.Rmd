@@ -3,16 +3,21 @@ title: "Red Wine"
 author: "Melinda K. Higgins, PhD."
 date: "February 16, 2017"
 output:
-  github_document: default
+  word_document: default
   html_document: default
   pdf_document: default
-  word_document: default
+  github_document: default
 ---
 
 ```{r setup}
+# code chunk setting for RMD file
 knitr::opts_chunk$set(echo = TRUE)
 
-# define libraries
+# load packages for RMD file
+# any functions/code you use in your
+# RMD file must have the correct package library
+# loaded BEFORE you try to use the command/function
+# or you will get errors when you knit the RMD file
 library(ggplot2)
 ```
 
@@ -28,6 +33,9 @@ If it was a simple comma-delimtied file the function `read.csv()` would work fin
 NOTE: `read.table()` also "fixes" the variable names such that the spaces are filled in using a period `.`. For example, the 1st variable "fixed acidity" is converted to `fixed.acidity` in the final dataframe.
 
 ```{r}
+# make sure the code to read in the
+# data is in your RMD file otherwise
+# when you knit, you will get errors
 redWine <- read.table("winequality-red.csv",
                       header=TRUE,
                       sep=";")
@@ -42,13 +50,27 @@ summary(redWine)
 ## Histogram of Fixed Acidity using `ggplot()`
 
 ```{r}
+# aes() defines which variable you want the 
+# histogram for.
 ggplot(aes(fixed.acidity), data=redWine) +
   geom_histogram()
 ```
 
 ## Density Overlay with Histogram & add color
 
+The code below adn be modified as you wish to make more interesting histograms with an overlaid density curve.
+
 ```{r}
+# remember aes(..density..) is what you use to
+# change from a frequency based (counts) histogram
+# to one based on the proportions or "density"
+# breaks=seq(4, 16, by = 0.5) defines the breakpoints
+# we want to see for this variable "fixed.acidity"
+# col="red" defines the outline color of each bar
+# fill="green" defines the color inside each bar
+# alpha=.2 is the transparency level for the fill color
+# the overlaid geom_density() col is also "red" (color 2)
+# finally custom title, xlabel and ylabel are provided
 ggplot(aes(fixed.acidity), data=redWine) + 
   geom_histogram(aes(y =..density..), 
                  breaks=seq(4, 16, by = 0.5), 
@@ -58,5 +80,74 @@ ggplot(aes(fixed.acidity), data=redWine) +
   geom_density(col=2) + 
   labs(title="Histogram for Fixed Acidity") +
   labs(x="Fixed Acidity", y="Proportion")
+```
+
+## Example Scatterplot Matrix
+
+```{r}
+# load car package - to use scatterplotMatrix()
+library(car)
+
+# make scatterplot matrix for quality and 
+# some of the first variables
+scatterplotMatrix(~ quality + fixed.acidity +
+                     volatile.acidity + citric.acid +
+                     residual.sugar, data=redWine)
+```
+
+## try a linear model and summarize
+
+```{r}
+model1 <- lm(quality ~ fixed.acidity +
+                     volatile.acidity + citric.acid +
+                     residual.sugar, data=redWine)
+summary(model1)
+```
+
+## run a 2nd model and compare
+
+Drop all non-significant variables - so keep "volatile.acidity" and run again
+
+```{r}
+model2 <- lm(quality ~ volatile.acidity, data=redWine)
+summary(model2)
+```
+
+## Compare these 2 linear models
+
+We can use the `stargazer` package to compare 2 similar models. In order for the tables to work correctly for HTML output, you need to do 2 things: (1) add `results="asis"` to the `R` code chunk option and (2) add `type="html"` as an option in the `stargazer()` function call.
+
+_**WARNING**: This approach will NOT work if you "knit" to DOCX or PDF. It only works for HTML output._
+
+```{r, results="asis"}
+library(stargazer)
+stargazer(model1, model2, 
+          title="Comparison of 2 Regression outputs",
+          type="html")
+```
+
+If you want a format that will work for all of the output formats (HTML, DOCX and PDF), use `type="text"` option which will give simple R text-based output.
+
+```{r}
+stargazer(model1, model2, 
+          title="Comparison of 2 Regression outputs",
+          type="text")
+```
+
+## look at some diagnostic plots
+
+```{r}
+residualPlots(model1)
+avPlots(model1, id.n=3, id.cex=0.7)
+qqPlot(model1, id.n=3)
+influenceIndexPlot(model1, id.n=3)
+```
+
+## Other diagnostics
+
+```{r}
+outlierTest(model1)
+ncvTest(model1)
+vif(model1)
 ```
 
